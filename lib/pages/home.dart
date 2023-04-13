@@ -27,6 +27,30 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void menuOpen() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Меню'),
+          backgroundColor: Colors.deepOrangeAccent,
+        ),
+        body: Row(
+          children: [
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                  Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                },
+                child: Text('На главную')),
+            Padding(padding: EdgeInsets.only(left: 30)),
+            Text('Мое простое меню')
+          ],
+        ),
+      );
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +59,8 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.deepOrangeAccent,
         title: Text('Список дел'),
         centerTitle: true,
+        //Список виджетов в шапке
+        actions: [IconButton(onPressed: menuOpen, icon: Icon(Icons.menu))],
       ),
 
       //Лист из списка карточек с делами
@@ -51,7 +77,7 @@ class _HomeState extends State<Home> {
                     onPressed: () {
                       deleteTodoList(todoList, index);
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content:Text('Запись удалена')));
+                          SnackBar(content: Text('Запись удалена')));
                       print('List count:${todoList.length}');
                     },
                     icon: Icon(Icons.delete_sweep),
@@ -63,8 +89,8 @@ class _HomeState extends State<Home> {
               onDismissed: (direction) {
                 //if (direction == DismissDirection.endToStart)  //смахивание справа на лево
                 deleteTodoList(todoList, index);
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content:Text('Запись удалена')));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Запись удалена')));
                 print('List count:${todoList.length}');
               },
             );
@@ -90,12 +116,12 @@ class _HomeState extends State<Home> {
                       onPressed: () {
                         setState(() {
                           if (textController.text.isEmpty) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content:Text('Поле пусто')));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Поле пусто')));
                           } else {
                             todoList.add(userToDo);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content:Text('Запись успешно добавлена')));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Запись успешно добавлена')));
                           }
                         });
 
